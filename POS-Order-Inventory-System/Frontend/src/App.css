@@ -149,6 +149,14 @@ input:focus, select:focus { border-color: #967eff; box-shadow: 0 0 0 3px rgba(10
 .icon-button:hover { border-color: #cfc6e8; color: var(--brand); background: #faf8ff; }
 .danger-text:hover { border-color: #f0c4cd; color: #ba4053; background: #fff6f7; }
 
+/* Add-to-cart plus button */
+.icon-button-add { display: inline-grid; width: 32px; height: 32px; flex: 0 0 auto; place-items: center; padding: 0; border: 0; border-radius: 10px; color: #fff; background: linear-gradient(125deg, var(--brand), #5a38de); box-shadow: 0 6px 13px rgba(91, 56, 222, 0.3); cursor: pointer; transition: transform 150ms ease, box-shadow 150ms ease, background 150ms ease; }
+.icon-button-add svg { display: block; }
+.icon-button-add:hover:not(:disabled) { transform: translateY(-1px) scale(1.06); box-shadow: 0 9px 18px rgba(91, 56, 222, 0.4); }
+.icon-button-add:active:not(:disabled) { transform: translateY(0) scale(0.94); box-shadow: 0 4px 9px rgba(91, 56, 222, 0.3); }
+.icon-button-add:focus-visible { outline: none; box-shadow: 0 0 0 3px rgba(109, 74, 255, 0.28); }
+.icon-button-add:disabled { cursor: not-allowed; background: #e9e6f0; color: #a49eb1; box-shadow: none; }
+
 .cart-layout, .checkout-layout, .details-grid { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(270px, 0.65fr); gap: 20px; }
 .cart-panel { min-width: 0; }
 .cart-product { min-width: 160px; }

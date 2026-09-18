@@ -222,7 +222,18 @@ export default function Products() {
                       <td><span className={`stock-badge ${stock.tone}`}>{stock.label}</span></td>
                       <td>
                         <div className="table-actions align-right">
-                          <button className="icon-button-add" type="button" onClick={() => addToCart(product)} title={`Add ${product.name} to cart`} aria-label={`Add ${product.name} to cart`}>+</button>
+                          <button
+                            className="icon-button-add"
+                            type="button"
+                            onClick={() => addToCart(product)}
+                            disabled={Number(product.stock) === 0}
+                            title={Number(product.stock) === 0 ? `${product.name} is out of stock` : `Add ${product.name} to cart`}
+                            aria-label={Number(product.stock) === 0 ? `${product.name} is out of stock` : `Add ${product.name} to cart`}
+                          >
+                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                              <path d="M7 1.5v11M1.5 7h11" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" />
+                            </svg>
+                          </button>
                           <button className="icon-button" type="button" onClick={() => handleEdit(product)} title={`Edit ${product.name}`} aria-label={`Edit ${product.name}`}>Edit</button>
                           <button className="icon-button danger-text" type="button" onClick={() => deleteProduct(product._id)} title={`Delete ${product.name}`} aria-label={`Delete ${product.name}`}>Delete</button>
                         </div>
