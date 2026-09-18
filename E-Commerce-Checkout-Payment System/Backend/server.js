@@ -14,24 +14,35 @@ const {
 } = require('./src/jobs/reservationExpiryJob');
 
 const PORT = process.env.PORT || 5000;
+const HOST = '0.0.0.0';
 
 let server;
 
 const start = async () => {
   try {
     await connectDB();
+
     startReservationExpiryJob(30 * 1000);
 
-    server = app.listen(PORT, () => {
+    server = app.listen(PORT, HOST, () => {
+      const baseUrl =
+        process.env.RENDER_EXTERNAL_URL || `http://localhost:${PORT}`;
+
       console.log(
-        `✅ API server running in ${process.env.NODE_ENV || 'development'} mode on http://localhost:${PORT}`
+        `✅ API server running in ${process.env.NODE_ENV || 'development'} mode`
       );
+      console.log(`🌐 Server URL: ${baseUrl}`);
+      console.log(`⏰ Reservation expiry job is running every 30 seconds`);
     });
 
     process.on('unhandledRejection', (reason) => {
       console.error('💥 Unhandled Promise Rejection:', reason);
-      if (server) return server.close(() => process.exit(1));
-      process.exit(1);
+
+      if (server) {
+        server.close(() => process.exit(1));
+      } else {
+        process.exit(1);
+      }
     });
 
     process.on('uncaughtException', (err) => {
@@ -46,8 +57,13 @@ const start = async () => {
 
 const shutdown = (signal) => {
   console.log(`\n${signal} received. Closing server gracefully...`);
+
   stopReservationExpiryJob();
-  if (!server) process.exit(0);
+
+  if (!server) {
+    process.exit(0);
+  }
+
   server.close(async () => {
     try {
       await mongoose.connection.close();
@@ -55,8 +71,10 @@ const shutdown = (signal) => {
     } catch (err) {
       console.error('Error closing MongoDB connection:', err.message);
     }
+
     process.exit(0);
   });
+
   // Force exit if graceful close hangs
   setTimeout(() => process.exit(1), 10000).unref();
 };
