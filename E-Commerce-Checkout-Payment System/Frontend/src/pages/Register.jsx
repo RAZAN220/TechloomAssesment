@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../hooks/useAuth';
 import { useToast } from '../context/ToastContext';
 import useDocumentTitle from '../hooks/useDocumentTitle';
+import Icon from '../components/Icon';
 
 const Register = () => {
   const { register } = useAuth();
@@ -12,6 +13,8 @@ const Register = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState(null);
   const [fieldErrors, setFieldErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
 
   useDocumentTitle('Create account');
 
@@ -38,7 +41,7 @@ const Register = () => {
         email: form.email,
         password: form.password,
       });
-      toast.success(`Account created — welcome, ${user.name}!`);
+      toast.success(`Account created - welcome, ${user.name}!`);
       navigate('/', { replace: true });
     } catch (err) {
       setError(err.message);
@@ -98,31 +101,53 @@ const Register = () => {
           </label>
           <label className="filter-field">
             <span>Password</span>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              required
-              autoComplete="new-password"
-              placeholder="At least 6 characters"
-            />
+            <div className="input-wrapper">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                name="password"
+                value={form.password}
+                onChange={handleChange}
+                required
+                autoComplete="new-password"
+                placeholder="At least 6 characters"
+              />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                tabIndex={-1}
+              >
+                <Icon name={showPassword ? 'eyeOff' : 'eye'} size={20} />
+              </button>
+            </div>
             {fieldError('password')}
           </label>
           <label className="filter-field">
             <span>Confirm password</span>
-            <input
-              type="password"
-              name="confirm"
-              value={form.confirm}
-              onChange={handleChange}
-              required
-              autoComplete="new-password"
-              placeholder="Repeat your password"
-            />
+            <div className="input-wrapper">
+              <input
+                type={showConfirm ? 'text' : 'password'}
+                name="confirm"
+                value={form.confirm}
+                onChange={handleChange}
+                required
+                autoComplete="new-password"
+                placeholder="Repeat your password"
+              />
+              <button
+                type="button"
+                className="toggle-password"
+                onClick={() => setShowConfirm(!showConfirm)}
+                aria-label={showConfirm ? 'Hide password' : 'Show password'}
+                tabIndex={-1}
+              >
+                <Icon name={showConfirm ? 'eyeOff' : 'eye'} size={20} />
+              </button>
+            </div>
           </label>
           <button type="submit" className="btn btn-primary btn-block" disabled={submitting}>
-            {submitting ? 'Creating account…' : 'Create account'}
+            {submitting ? 'Creating account...' : 'Create account'}
           </button>
         </form>
 
