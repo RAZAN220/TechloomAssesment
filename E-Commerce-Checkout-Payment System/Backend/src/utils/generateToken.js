@@ -1,0 +1,12 @@
+/**
+ * JWT helper — signs a token for a given user id.
+ * Secret + lifetime come from environment variables.
+ */
+const jwt = require('jsonwebtoken');
+
+const generateToken = (userId) =>
+  jwt.sign({ id: userId }, process.env.JWT_SECRET, {
+    expiresIn: process.env.JWT_EXPIRES_IN || '30d',
+  });
+
+module.exports = generateToken;
