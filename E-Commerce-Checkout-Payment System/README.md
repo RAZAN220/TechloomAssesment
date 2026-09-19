@@ -207,8 +207,7 @@ Pending
 
 1. Clone the repository
 
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
-
+git clone https://github.com/RAZAN220/TechloomAssesment
 cd E-Commerce-Checkout-Payment-System
 
 2. Install Backend dependencies
